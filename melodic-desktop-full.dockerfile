@@ -1,12 +1,12 @@
 FROM osrf/ros:melodic-desktop-full
 
 COPY --from=nvidia/opengl:1.0-glvnd-runtime-ubuntu18.04 \
-  /usr/local/lib/x86_64-linux-gnu \
-  /usr/local/lib/x86_64-linux-gnu
+  /usr/lib/x86_64-linux-gnu \
+  /usr/lib/x86_64-linux-gnu
 
 COPY --from=nvidia/opengl:1.0-glvnd-runtime-ubuntu18.04 \
-  /usr/local/share/glvnd/egl_vendor.d/10_nvidia.json \
-  /usr/local/share/glvnd/egl_vendor.d/10_nvidia.json
+  /usr/share/glvnd/egl_vendor.d/10_nvidia.json \
+  /usr/share/glvnd/egl_vendor.d/10_nvidia.json
 
 RUN echo '/usr/local/lib/x86_64-linux-gnu' >> /etc/ld.so.conf.d/glvnd.conf && \
     ldconfig && \
