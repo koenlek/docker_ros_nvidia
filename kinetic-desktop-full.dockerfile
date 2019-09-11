@@ -1,15 +1,4 @@
-# This is a generic dockerfile to patch an existing, Ubuntu 16.04 based docker image.
-
-# Example usage:
-# ORIG_IMG=osrf/ros:kinetic-desktop-full
-# docker build . -f patch-opengl-u1604.dockerfile -t ${ORIG_IMG:?}-nvidia --build-arg FROM_ARG=${ORIG_IMG:?}
-# docker run -it --rm --net=host $DOCKER_COMMON_ARGS osrf/ros:kinetic-desktop-full-nvidia rviz
-
-# This is for Ubuntu 16.04 based images.
-# For others, see: https://hub.docker.com/r/nvidia/opengl
-
-ARG FROM_ARG
-FROM ${FROM_ARG}
+FROM osrf/ros:kinetic-desktop-full
 
 COPY --from=nvidia/opengl:1.1-glvnd-runtime-ubuntu16.04 \
   /usr/local/lib/x86_64-linux-gnu \
