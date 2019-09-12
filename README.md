@@ -1,6 +1,6 @@
 # ROS docker images for nvidia
 
-[Docker Hub link](https://cloud.docker.com/u/koenlek/repository/docker/koenlek/ros-nvidia)
+[Docker Hub link](https://hub.docker.com/r/koenlek/ros-nvidia)
 
 This repo hosts Dockerfiles that apply a patch on top of the osrf/ros docker images. This patch
 fixes opengl based programs when run under docker with nvidia acceleration. 
