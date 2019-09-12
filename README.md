@@ -27,45 +27,62 @@ you run:
 docker run --gpus all nvidia/cuda:9.0-base nvidia-smi
 ```
 
-## Example: run RVIZ
+## Examples
+
+### RVIZ (ROS Kinetic)
 
 I usually add these to my .bashrc (but you can also run them manually on each shell if you prefer):
 
 ```sh
 # prepare for running dockerized GUIs
 xhost +local:docker &> /dev/null # actually only needs to be run once per system boot (though rerunning is harmless, so you can also just put it in your .bashrc)
-DOCKER_COMMON_ARGS="--env=DISPLAY --env=XDG_RUNTIME_DIR --env=QT_X11_NO_MITSHM=1 --device=/dev/dri:/dev/dri -v /tmp/.X11-unix:/tmp/.X11-unix:rw"
-# Feel free to add e.g. "--privileged --gpus all" to DOCKER_COMMON_ARGS to, if you want
+DOCKER_COMMON_ARGS="--gpus all --env=NVIDIA_VISIBLE_DEVICES=all --env=NVIDIA_DRIVER_CAPABILITIES=all --env=DISPLAY --env=QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix:rw"
+# Feel free to add e.g. "--privileged" or remove things from DOCKER_COMMON_ARGS to, if you want
+# For Intel graphics, you'll want to remove "--gpus all --env=NVIDIA_VISIBLE_DEVICES=all --env=NVIDIA_DRIVER_CAPABILITIES=all"
+# and add "--device=/dev/dri:/dev/dri"
 ```
 
 Normally, you could use e.g. these commands:
 
 ```sh
 # start a roscore (if none is running already)
-docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS osrf/ros:melodic-desktop-full roscore
+docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS osrf/ros:kinetic-desktop-full roscore
 # run rviz
-docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS osrf/ros:melodic-desktop-full rviz
+docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS osrf/ros:kinetic-desktop-full rviz
 ```
 
-These would work fine on Intel graphics, but won't work on Nvidia graphics.
+These would work fine on Intel graphics (given that you adjusted `DOCKER_COMMON_ARGS` for Intel 
+Graphics as suggested above), but won't work on Nvidia graphics.
 
-For nvidia, you can now use these commands instead:
+For Nvidia, you can now use these commands instead:
 
 ```sh
 # start a roscore (if none is running already)
-docker run -it --rm --net=host --privileged --gpus all $DOCKER_COMMON_ARGS koenlek/ros-nvidia:melodic-desktop-full roscore
+docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS koenlek/ros-nvidia:melodic-desktop-full roscore
 # run rviz
-docker run -it --rm --net=host --privileged --gpus all $DOCKER_COMMON_ARGS koenlek/ros-nvidia:melodic-desktop-full rviz
+docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS koenlek/ros-nvidia:melodic-desktop-full rviz
 ```
+
+### RVIZ (ROS Melodic or newer)
+
+Good news! This should work with the vanilla docker images (as they already contain libglvnd):
+
+```sh
+# start a roscore (if none is running already)
+docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS osrf/ros:melodic-desktop-full roscore
+# run rviz (melodic)
+docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS osrf/ros:melodic-desktop-full rviz
+```
+
 
 # Troubleshooting
 
 First, make sure that non-accelerated GUIs work:
 
 ```sh
-docker run -it --rm --net=host --privileged --gpus all $DOCKER_COMMON_ARGS koenlek/ros-nvidia:melodic-desktop-full roscore
+docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS koenlek/ros-nvidia:melodic-desktop-full roscore
 # run RQT
-docker run -it --rm --net=host --privileged --gpus all $DOCKER_COMMON_ARGS koenlek/ros-nvidia:melodic-desktop-full rqt
+docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS koenlek/ros-nvidia:melodic-desktop-full rqt
 ```
 
 If rqt crashes, then you need to fix running basic GUIs through docker first. 
