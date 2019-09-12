@@ -58,9 +58,9 @@ For Nvidia, you can now use these commands instead:
 
 ```sh
 # start a roscore (if none is running already)
-docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS koenlek/ros-nvidia:melodic-desktop-full roscore
+docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS koenlek/ros-nvidia:kinetic-desktop-full roscore
 # run rviz
-docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS koenlek/ros-nvidia:melodic-desktop-full rviz
+docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS koenlek/ros-nvidia:kinetic-desktop-full rviz
 ```
 
 ### RVIZ (ROS Melodic or newer)
@@ -80,9 +80,9 @@ docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS osrf/ros:melodic
 First, make sure that non-accelerated GUIs work:
 
 ```sh
-docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS koenlek/ros-nvidia:melodic-desktop-full roscore
+docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS koenlek/ros-nvidia:kinetic-desktop-full roscore
 # run RQT
-docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS koenlek/ros-nvidia:melodic-desktop-full rqt
+docker run -it --rm --net=host --privileged $DOCKER_COMMON_ARGS koenlek/ros-nvidia:kinetic-desktop-full rqt
 ```
 
 If rqt crashes, then you need to fix running basic GUIs through docker first. 
